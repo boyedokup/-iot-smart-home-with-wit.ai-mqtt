@@ -4,7 +4,7 @@
   	<meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="microphone/css/microphone.min.css">
-    <title>IOT-Wit.ai</title>
+    <title>Smart Home</title>
   </head>
   <body style="text-align: center;">
     <center><div id="microphone"></div></center>
@@ -55,15 +55,15 @@
        
        <h2>Air Condition </h2>
      <p> <span class="status" id="ac_status">Status:ON </span> <span id="ac_temp">20°</span><br><br>
-      <span class="command"> Say Turn AC On/Off ,set temperature to 23 degrees</span>
+      <span class="command"> Say Turn AC On/Off ,set temperature to 10 degrees</span>
     </p>
     </div>
 
     <div id="heater" class="device">
        
        <h2> Heater</h2>
-     <p> <span class="status" id="heater_status">Status:ON </span> <span id="heater_temp">50°</span><br><br>
-      <span class="command"> Say Turn Water Heater On/Off ,set temperature to 23 degrees</span>
+     <p> <span class="status" id="heater_status">Status:ON </span> <span id="heater_temp">30°</span><br><br>
+      <span class="command"> Say Turn Water Heater On/Off ,set temperature to 20 degrees</span>
     </p>
     </div>
 
@@ -92,7 +92,7 @@
 
       client.onMessageArrived = function (message) {
       console.log("Message Arrived: "+message.payloadString);     
-      dashboard_display(message.payloadString)
+      update_dashboard(message.payloadString)
       }
 
       // Called when the connection is made
@@ -116,7 +116,7 @@
       }
 
 
-      function dashboard_display(payload){
+      function  update_dashboard(payload){
           // Update UI when MQTT broker responds- client.onMessageArrived
          payload= JSON.parse(payload);
         console.log("update Dashboard UI")
@@ -229,6 +229,7 @@
      .status{
         pading:10px;
         text-transform: uppercase;
+        color:grey;
         
      }
 
