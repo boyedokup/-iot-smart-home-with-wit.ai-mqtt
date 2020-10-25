@@ -2,6 +2,7 @@
  <html>
   <head>
   	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="microphone/css/microphone.min.css">
     <title>IOT-Wit.ai</title>
   </head>
@@ -11,9 +12,63 @@
     <div id="info"></div>
     <div id="error"></div>
 
+
     <hr></hr>
 
    <div id="device_info"></div>
+
+   <div class="device-container">
+
+    <div id="tv" class="device">
+       
+       <h2>TV </h2>
+     <p> <span class="status" id="tv_status">Status:ON </span><br><br>
+      <span class="command"> Say Turn TV On/Off</span>
+    </p>
+    </div>
+
+    <div id="light" class="device">
+       
+       <h2>Lights </h2>
+     <p> <span class="status" id="light_status">Status:ON </span><br><br>
+      <span class="command"> Say Turn Light On/Off</span>
+    </p>
+    </div>
+
+    <div id="coffee_maker" class="device">
+       
+       <h2>Coffee Maker </h2>
+     <p> <span class="status" id="coffee_maker_status">Status:ON </span><br><br>
+      <span class="command"> Say Turn Coffee Maker On/Off</span>
+    </p>
+    </div>
+
+    <div id="fridge" class="device">
+       
+       <h2> Refrigerator </h2>
+     <p> <span class="status" id="fridge_status">Status:ON </span><br><br>
+      <span class="command"> Say Turn Fridge On/Off</span>
+    </p>
+    </div>
+
+    <div id="ac" class="device">
+       
+       <h2>Air Condition </h2>
+     <p> <span class="status" id="ac_status">Status:ON </span> <span id="ac_temp">20°</span><br><br>
+      <span class="command"> Say Turn AC On/Off ,set temperature to 23 degrees</span>
+    </p>
+    </div>
+
+    <div id="heater" class="device">
+       
+       <h2> Heater</h2>
+     <p> <span class="status" id="heater_status">Status:ON </span> <span id="heater_temp">50°</span><br><br>
+      <span class="command"> Say Turn Water Heater On/Off ,set temperature to 23 degrees</span>
+    </p>
+    </div>
+
+
+   </div>
     
     <script src="microphone/js/microphone.min.js"></script>
      <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js" type="text/javascript"></script>
@@ -23,34 +78,35 @@
         document.getElementById("device_info").innerHTML = msg;
       };
 
-      device_info("Connection devices...please wait")
+      device_info("Connecting devices...please wait");
 
       // Create a client instance: Broker, Port, Websocket Path, Client ID
-      client = new Paho.MQTT.Client("broker.hivemq.com", Number(8000), "/mqtt", "1234");
-
-
+      client = new Paho.MQTT.Client("broker.hivemq.com", Number(8000), "/mqtt", "smart-home-1234");
 
       // set callback handlers
       client.onConnectionLost = function (responseObject) {
       console.log("Connection Lost: "+responseObject.errorMessage);
+      device_info("Connection Lost: "+responseObject.errorMessage +"...Refresh page");
+
       }
 
       client.onMessageArrived = function (message) {
-      console.log("Message Arrived: "+message.payloadString);
+      console.log("Message Arrived: "+message.payloadString);     
       dashboard_display(message.payloadString)
       }
 
       // Called when the connection is made
       function onConnect(){
       console.log("Connected");
-      device_info("Devices are connected")
+      device_info("Devices are connected");
        client.subscribe("/smart-home/device");
 
       }
 
       function publish(intent,entities)
       {
-
+         // Publish voice command  to MQTT broker
+         console.log("Publish command to broker");
         var message = new Paho.MQTT.Message(JSON.stringify(entities));
 
         message.destinationName ="/smart-home/device";
@@ -61,7 +117,29 @@
 
 
       function dashboard_display(payload){
-        console.log("update UI",payload)
+          // Update UI when MQTT broker responds- client.onMessageArrived
+         payload= JSON.parse(payload);
+        console.log("update Dashboard UI")
+        if(payload.device){
+            
+             device=payload.device.value;
+             device= device.replace(" ","_");
+
+         var status= document.getElementById(device+"_status");
+         if(status)
+        status.innerHTML = "Status:"+payload.on_off.value;
+
+          if(payload.temperature )
+        {
+           
+        var temp= document.getElementById(device+"_temp");
+        if(temp)
+        temp.innerHTML = payload.temperature.value.temperature+"°";
+        }
+
+        }
+
+     
       }
 
     // Connect the client, providing an onConnect callback
@@ -112,7 +190,7 @@
         info("Microphone is connecting");
       };
       mic.ondisconnected = function () {
-        info("Microphone is not connected");
+        info("Microphone is not connected...refresh page");
       };
 
       mic.connect("XP2ESNAVYVYXEF5YKDJXR4QHWVT7LANY");
@@ -130,5 +208,37 @@
 
  
     </script>
+    <style>
+      
+     .device-container{
+      display:flex;
+      flex-wrap: wrap;
+      justify-content: center;
+     }
+
+     .device{
+      width:auto;
+      height:auto;
+     border:dashed 1px grey;
+     text-align:center;
+     padding:20px;
+     margin:10px;
+   
+     }
+
+     .status{
+        pading:10px;
+        text-transform: uppercase;
+        
+     }
+
+     .command{
+       color:white;
+       background-color:orange;
+      padding:5px;
+       border-radius:10px;
+
+     }
+    </style>
   </body>
   </html>
