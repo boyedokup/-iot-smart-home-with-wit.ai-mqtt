@@ -17,8 +17,8 @@ Before I walk you through the code let's have abit of fun, clone the repo and ho
 
 ### Wit.AI
 
-Wit.Ai is a Natural Language Processing tool (NLP) that takes voice or text phrases and makes meaning out of them. Simply put we can give it audio and we
-we get strcutured text in return (Speech-to-Text). Wit.ai has many uses depending on the type of project. I will strongly recommend this [tutorial link](https://wit.ai/docs/quickstart) to grasp the concepts better
+Wit.Ai is a Natural Language Processing tool (NLP) that takes voice or text phrases and makes meaning out of them. Simply put we can give it audio through
+the microphone and we get strcutured text in return (Speech-to-Text). Wit.ai has many uses depending on the type of project. I will strongly recommend this [tutorial link](https://wit.ai/docs/quickstart) to grasp the concepts better
 
 Let me explain some key concepts you will need to train your model better with Wit.Ai.
 
