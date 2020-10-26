@@ -8,7 +8,7 @@ Before I walk you through the code let's have abit of fun, clone the repo and ho
 - Clone this project
 - Drop the project into any local server e.g XAMPP
 - The entire app is in the /public directory, no need to compile  
-- Follow the instruction when you launch the app in your browswer
+- Follow the instruction when you launch the app in your browser
 
 
  I hope you had some fun, now lets dive into the components of this app and how they all fit together.
@@ -48,7 +48,7 @@ There are two main concepts to understanding the MQTT protocol
   - Data is published to an MQTT cloud broker like [HiveMQ](https://www.hivemq.com/mqtt-protocol/) and [Mosquito](https://test.mosquitto.org/) through Topics/Channels
   
 - **Subscribe**
-  - Listen devices or clients subscribe to Topics to listen for any streams
+  - Devices or client apps subscribe to Topics to listen for any streams
   
 
 # [Wit.AI Microphone Code Snippet](https://github.com/wit-ai/microphone/blob/master/quickstart.md)
