@@ -38,7 +38,7 @@ Let me explain some key concepts you will need to train your model better with W
   - Wit.Ai has pre-built entities and traits you can use. For this project I used the Temperature Entity and On_Off trait. You can check for pre-built options
   from [here](https://wit.ai/docs/built-in-entities/20200513/)
   
-- **Custom Entities **
+- **Custom Entities**
   - There are no pre-built entities for spotting devices so I had to create a custom entity. It is very easy. I created an intent- device to track the device names like tv,
   fridge, ac, heater etc. I created a custom entity using the [keyword and free-text](https://wit.ai/docs/recipes) option. I have attached a screenshot.
   
