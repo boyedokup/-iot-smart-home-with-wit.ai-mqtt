@@ -1,5 +1,7 @@
 ## Quick Guide to Creating a Voice Enabled App with Wit.Ai and MQTT
 
+![iot-smart-home](https://snipboard.io/l9QVPj.jpg)
+
 This Project has a simple app using Facebook's [Wit.Ai](https://wit.ai/) and[ Paho MQTT Client](https://www.hivemq.com/blog/mqtt-client-library-encyclopedia-paho-js/) to allow a user control the state of devices in their homes. 
 Just like how Siri, Google Assistant and Cortana works, this app also processes the voice commands through Wit.ai and publishes it to an MQTT cloud broker, then the home device listens.
 
@@ -36,11 +38,17 @@ Let me explain some key concepts you will need to train your model better with W
   - Wit.Ai has pre-built entities and traits you can use. For this project I used the Temperature Entity and On_Off trait. You can check for pre-built options
   from [here](https://wit.ai/docs/built-in-entities/20200513/)
   
+- **Custom Entities **
+  - There are no pre-built entities for spotting devices so I had to create a custom entity. It is very easy. I created an intent- device to track the device names like tv,
+  fridge, ac, heater etc. I created a custom entity using the [keyword and free-text](https://wit.ai/docs/recipes) option. I have attached a screenshot.
+  
+  ![Wit.ai screenshot](https://snipboard.io/viVJ1t.jpg)
+  
 ### Paho MQTT Client
  
  MQTT is a a lightweight data protocol for streaming tele-data with the least over-head cost. This means the protocal allows for realtime data streams across networks.
- Many IOT devices like Arduino can communicate with the MQTT protocol. [Paho MQTT Client](https://www.hivemq.com/mqtt-client-library-encyclopedia) provides libraries for many frameworks to communicate over this protocol. We will use the [JS library](https://www.hivemq.com/blog/mqtt-client-library-encyclopedia-paho-js/) for this web app. 
-we get strcutured text in return (Speech-to-Text). Wit.ai has many uses depending on the type of project. I will strongly recommend this [tutorial link](https://www.hivemq.com/mqtt-essentials/) to grasp the concepts better
+ Many IOT devices like Arduino can communicate with the MQTT protocol. [Paho MQTT Client](https://www.hivemq.com/mqtt-client-library-encyclopedia) provides libraries for many   frameworks to communicate over this protocol. We will use the [JS library](https://www.hivemq.com/blog/mqtt-client-library-encyclopedia-paho-js/) for this web app. 
+ I will strongly recommend this [tutorial link](https://www.hivemq.com/mqtt-essentials/) to grasp the concepts better
 
 There are two main concepts to understanding the MQTT protocol
 
