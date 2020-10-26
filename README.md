@@ -1,7 +1,7 @@
 ## Quick Guide to Creating a Voice Enabled App with Wit.Ai and MQTT
 
 This Project has a simple app using Facebook's [Wit.Ai](https://wit.ai/) and[ Paho MQTT Client](https://www.hivemq.com/blog/mqtt-client-library-encyclopedia-paho-js/) to allow a user control the state of devices in their homes. 
-Just like how Siri, Google Assistant and Cortana works, this app also takes voice commands and publishes it to an MQTT cloud broker
+Just like how Siri, Google Assistant and Cortana works, this app also processes the voice commands through Wit.ai and publishes it to an MQTT cloud broker, then the home device listens.
 
 Before I walk you through the code let's have abit of fun, clone the repo and host it on any local server
 
@@ -36,34 +36,99 @@ Let me explain some key concepts you will need to train your model better with W
   - Wit.Ai has pre-built entities and traits you can use. For this project I used the Temperature Entity and On_Off trait. You can check for pre-built options
   from [here](https://wit.ai/docs/built-in-entities/20200513/)
   
+ ### Paho MQTT Client
+ 
+ MQTT is a a lightweight data protocol for streaming tele-data with the least over-head cost. This means the protocal allows for realtime data streams across networks.
+ Many IOT devices like Arduino can communicate with the MQTT protocol. [Paho MQTT Client](https://www.hivemq.com/mqtt-client-library-encyclopedia) provides libraries for many frameworks to communicate over this protocol. We will use the [JS library](https://www.hivemq.com/blog/mqtt-client-library-encyclopedia-paho-js/) for this web app. 
+we get strcutured text in return (Speech-to-Text). Wit.ai has many uses depending on the type of project. I will strongly recommend this [tutorial link](https://www.hivemq.com/mqtt-essentials/) to grasp the concepts better
+
+There are two main concepts to understanding the MQTT protocol
+
+- **Publish**
+  - Data is published to an MQTT cloud broker like [HiveMQ](https://www.hivemq.com/mqtt-protocol/) and [Mosquito](https://test.mosquitto.org/) through Topics/Channels
   
-  `dsdsd`
+- **Subscribe**
+  - Listen devices or clients subscribe to Topics to listen for any streams
   
 
+# Wit.AI Microphone Code Snippet
 ```markdown
-Syntax highlighted code block
 
-# Header 1
-## Header 2
-### Header 3
+<html>
+  <head>
+    <link rel="stylesheet" href="microphone/css/microphone.min.css">
+  </head>
+  <body style="text-align: center;">
+    <center><div id="microphone"></div></center>
+    <pre id="result"></pre>
+    <div id="info"></div>
+    <div id="error"></div>
+    <script src="microphone/js/microphone.min.js"></script>
 
-- Bulleted
-- List
+    <script>
+      var mic = new Wit.Microphone(document.getElementById("microphone"));
+      var info = function (msg) {
+        document.getElementById("info").innerHTML = msg;
+      };
+      var error = function (msg) {
+        document.getElementById("error").innerHTML = msg;
+      };
+      mic.onready = function () {
+        info("Microphone is ready to record");
+      };
+      mic.onaudiostart = function () {
+        info("Recording started");
+        error("");
+      };
+      mic.onaudioend = function () {
+        info("Recording stopped, processing started");
+      };
+      mic.onresult = function (intent, entities) {
+        var r = kv("intent", intent);
 
-1. Numbered
-2. List
+        for (var k in entities) {
+          var e = entities[k];
 
-**Bold** and _Italic_ and `Code` text
+          if (!(e instanceof Array)) {
+            r += kv(k, e.value);
+          } else {
+            for (var i = 0; i < e.length; i++) {
+              r += kv(k, e[i].value);
+            }
+          }
+        }
 
-[Link](url) and ![Image](src)
+        document.getElementById("result").innerHTML = r;
+      };
+      mic.onerror = function (err) {
+        error("Error: " + err);
+      };
+      mic.onconnecting = function () {
+        info("Microphone is connecting");
+      };
+      mic.ondisconnected = function () {
+        info("Microphone is not connected");
+      };
+
+      mic.connect("CLIENT_TOKEN");
+      // mic.start();
+      // mic.stop();
+
+      function kv (k, v) {
+        if (toString.call(v) !== "[object String]") {
+          v = JSON.stringify(v);
+        }
+        return k + "=" + v + "\n";
+      }
+    </script>
+  </body>
+  </html>
+
+
+
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/boyedokup/-iot-smart-home-with-wit.ai-mqtt/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
 
 ### Support or Contact
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+Having trouble, create issue or email me on boyedokup@gmail.com
