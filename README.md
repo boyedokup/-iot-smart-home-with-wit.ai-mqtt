@@ -36,7 +36,7 @@ Let me explain some key concepts you will need to train your model better with W
   - Wit.Ai has pre-built entities and traits you can use. For this project I used the Temperature Entity and On_Off trait. You can check for pre-built options
   from [here](https://wit.ai/docs/built-in-entities/20200513/)
   
- ### Paho MQTT Client
+### Paho MQTT Client
  
  MQTT is a a lightweight data protocol for streaming tele-data with the least over-head cost. This means the protocal allows for realtime data streams across networks.
  Many IOT devices like Arduino can communicate with the MQTT protocol. [Paho MQTT Client](https://www.hivemq.com/mqtt-client-library-encyclopedia) provides libraries for many frameworks to communicate over this protocol. We will use the [JS library](https://www.hivemq.com/blog/mqtt-client-library-encyclopedia-paho-js/) for this web app. 
